@@ -59,7 +59,7 @@ export default class DebugMediator extends Mediator {
                 let source;
                 if(isFunction(responsibleElement.update)){
                     if(responsibleElement[command]){
-                        source = {changeReason: "Command", name: responsibleElement[command][event], data: responsibleElement[command][eventPayload]};
+                        source = {changeReason: "Command", name: responsibleElement[command].commandName + "\n" + responsibleElement[command][event], data: responsibleElement[command][eventPayload]};
                     }else{
                         source = {changeReason: "Unknown", name: "You should only update model states from commands!"};
                     }
