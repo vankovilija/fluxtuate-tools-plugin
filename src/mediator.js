@@ -1,6 +1,6 @@
 import {Mediator} from "fluxtuate"
 import {elementResponsible} from "fluxtuate/lib/model/_internals"
-import {event, eventPayload} from "fluxtuate/lib/command/_internals"
+import {event, eventPayload, command} from "fluxtuate/lib/command/_internals"
 import {debugMediator} from "./_internals"
 import {findIndex} from "lodash/array"
 import {isArray, isNumber, isString, isFunction} from "lodash/lang"
@@ -57,8 +57,13 @@ export default class DebugMediator extends Mediator {
                     this.storeStates = this.storeStates.slice(0, this.stateIndex);
                 }
                 let source;
-                if(isFunction(responsibleElement.execute)){
-                    source = {changeReason: "Command", name: responsibleElement[event], data: responsibleElement[eventPayload]};
+                if(isFunction(responsibleElement.update)){
+                    if(responsibleElement[command]){
+                        source = {changeReason: "Command", name: responsibleElement[command][event], data: responsibleElement[command][eventPayload]};
+                    }else{
+                        source = {changeReason: "Unknown", name: "You should only update model states from commands!"};
+                    }
+
                 }else if(isFunction(responsibleElement.setStore)){
                     source = {changeReason: "StoreInternal"};
                 }else{
