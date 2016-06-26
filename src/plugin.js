@@ -17,11 +17,7 @@ export default class ToolsPlugin {
     @inject
     context;
 
-    activePromise;
-
     mediators = [];
-
-    rootContext;
     
     initialize() {
         this.medsDelegator = new RetainDelegator();
