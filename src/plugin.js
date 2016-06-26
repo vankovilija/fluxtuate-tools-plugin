@@ -1,9 +1,7 @@
 import {inject} from "fluxtuate"
 import RetainDelegator from "fluxtuate/lib/delegator/retain-delegator"
 import {store} from "fluxtuate/lib/context/_internals"
-import {sendEvent} from "fluxtuate/lib/event-dispatcher/_internals"
 import {debugMediator} from "./_internals"
-import chainTwoFunctions from "fluxtuate/lib/utils/chainFunctions"
 import {autobind} from "core-decorators"
 
 @autobind
@@ -21,8 +19,6 @@ export default class ToolsPlugin {
     
     initialize() {
         this.medsDelegator = new RetainDelegator();
-
-        this.eventDispatcher[sendEvent] = chainTwoFunctions(this.setEventChain, this.eventDispatcher[sendEvent]);
         
         this.appStartedListener = this.contextDispatcher.addListener("started", ()=> {
             this.mediatorListner = this.contextDispatcher.addListener("mediator_created", (eventName, payload)=> {
@@ -45,13 +41,6 @@ export default class ToolsPlugin {
 
                 this.medsDelegator.detachDelegate(payload.mediator);
             });
-        });
-    }
-
-    setEventChain(eventName, payload) {
-        this.mediators.forEach((med)=>{
-            med.eventName = eventName;
-            med.eventPayload = payload;
         });
     }
     

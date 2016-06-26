@@ -1,4 +1,6 @@
 import {Mediator} from "fluxtuate"
+import {elementResponsible} from "fluxtuate/lib/model/_internals"
+import {event, eventPayload} from "fluxtuate/lib/command/_internals"
 import {debugMediator} from "./_internals"
 import {findIndex} from "lodash/array"
 import {isArray, isNumber, isString} from "lodash/lang"
@@ -46,20 +48,28 @@ export default class DebugMediator extends Mediator {
         });
         this.linkModel(this.store, (payload)=>{
             if(!this.changingState) {
+                let responsibleElement = payload[elementResponsible];
+
+
+
                 if(this.stateIndex < this.storeStates.length) {
                     this.commit();
                     this.storeStates = this.storeStates.slice(0, this.stateIndex);
                 }
-                let fromEvent;
-                if(this.eventName) {
-                    fromEvent = {eventName: this.eventName, eventPayload: this.eventPayload}
+                let source;
+                if(isFunction(responsibleElement.execute)){
+                    source = {changeReason: "Command", name: responsibleElement[event], data: responsibleElement[eventPayload]};
+                }else if(isFunction(responsibleElement.setStore)){
+                    source = {changeReason: "StoreInternal"};
+                }else{
+                    source = {changeReason: "ContextConfiguration", name: responsibleElement.contextName};
                 }
-                this.storeStates.push(Object.assign({date: new Date(), fromEvent}, payload, {models: undefined}));
+
+                this.storeStates.push(Object.assign({date: new Date(), source}, payload, {models: undefined}));
                 this.eventName = undefined;
                 this.eventPayload = undefined;
                 this.stateIndex = this.storeStates.length;
             }
-            this.changingState = false;
             return {states: this.storeStates.slice(), commits: this.commits.slice(), selectedState: this.stateIndex, selectedCommit: this.commitIndex, selectedDiskState: this.selectedDiskState};
         });
     }
@@ -71,7 +81,8 @@ export default class DebugMediator extends Mediator {
         this.stateIndex = index;
         let i = this.stateIndex - 1;
         this.changingState = true;
-        this.store.setData(this.storeStates[i].data)
+        this.store.setData(this.storeStates[i].data);
+        this.changingState = false;
     }
 
     commit(message) {
