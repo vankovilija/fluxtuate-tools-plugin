@@ -3,7 +3,7 @@ import {elementResponsible} from "fluxtuate/lib/model/_internals"
 import {event, eventPayload} from "fluxtuate/lib/command/_internals"
 import {debugMediator} from "./_internals"
 import {findIndex} from "lodash/array"
-import {isArray, isNumber, isString} from "lodash/lang"
+import {isArray, isNumber, isString, isFunction} from "lodash/lang"
 import moment from "moment"
 
 const reISO = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
