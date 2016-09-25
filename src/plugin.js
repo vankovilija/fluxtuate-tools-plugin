@@ -45,7 +45,6 @@ export default class ToolsPlugin {
     }
     
     destroy() {
-        if(this.context[routerContextSymbol]) return;
         this.mediators = [];
         if(this.mediatorListner) {
             this.mediatorListner.remove();
@@ -55,21 +54,9 @@ export default class ToolsPlugin {
             this.mediatorDestroyListener.remove();
             this.mediatorDestroyListener = null;
         }
-        if(this.routeListener) {
-            this.routeListener.remove();
-            this.routeListener = null;
-        }
-        if(this.routeListener1) {
-            this.routeListener1.remove();
-            this.routeListener1 = null;
-        }
         if(this.appStartedListener) {
             this.appStartedListener.remove();
             this.appStartedListener = null;
-        }
-        if(this.appStartingListener) {
-            this.appStartingListener.remove();
-            this.appStartingListener = null;
         }
     }
 }
