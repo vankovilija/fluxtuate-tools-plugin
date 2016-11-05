@@ -3,7 +3,7 @@
   "logo": {
     "file": "./logo.png"
   },
-  "version": "0.0.51",
+  "version": "0.0.57",
   "description": "a plugin to enable a better developer expirience for fluxtuate",
   "main": "lib/index.js",
   "scripts": {
@@ -54,8 +54,7 @@
     "babel-polyfill": "6.9.1",
     "core-decorators": "0.12.3",
     "moment": "^2.13.0",
-    "lodash": "^4.13.1",
-    "fluxtuate": "^0.0.91"
+    "lodash": "^4.13.1"
   },
   "devDependencies": {
     "babel-cli": "^6.10.1",
