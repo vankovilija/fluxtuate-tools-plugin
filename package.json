@@ -3,7 +3,7 @@
   "logo": {
     "file": "./logo.png"
   },
-  "version": "0.0.60",
+  "version": "0.0.61",
   "description": "a plugin to enable a better developer expirience for fluxtuate",
   "main": "lib/index.js",
   "scripts": {
