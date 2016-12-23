@@ -13,11 +13,11 @@ export default class Logger {
         let listeners = [];
 
         listeners.push(dispatcher.addListener("executeCommand", (ev, command)=>{
-            console.log(`command: ${command.commandName} was executed in context ${context.contextName}`);
+            console.log(`command: ${command.constructor ? command.constructor.name : command.commandName} was executed in context ${context.contextName} ${command[event] ? `with event ${command[event]}` : ""}`);
         }));
 
         listeners.push(dispatcher.addListener("completeCommand", (ev, command)=>{
-            console.log(`command: ${command.commandName} was completed in context ${context.contextName}`);
+            console.log(`command: ${command.constructor ? command.constructor.name : command.commandName} was completed in context ${context.contextName} ${command[event] ? `with event ${command[event]}` : ""}`);
         }));
 
         listeners.push(dispatcher.addListener("mediator_created", (ev, payload)=>{
