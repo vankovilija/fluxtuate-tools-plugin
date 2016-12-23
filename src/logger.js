@@ -9,7 +9,7 @@ const watchData = Symbol("fluxtuate_watchData");
 
 export default class Logger {
     static watchContext(context, watchChildren = true, watchModels = true) {
-        let contextDispatcher = context[contextDispatcher];
+        let contextDispatcherInstance = context[contextDispatcher];
         let dispatcher = context.dispatcher;
 
         let listeners = [];
@@ -18,65 +18,65 @@ export default class Logger {
             console.log(`event ${event.eventName} was dispatched in context ${context.contextName}`);
         };
 
-        listeners.push(contextDispatcher.addListener("executeCommand", (ev, command)=>{
+        listeners.push(contextDispatcherInstance.addListener("executeCommand", (ev, command)=>{
             console.log(`command: ${command.constructor ? command.constructor.name : command.commandName} was executed in context ${context.contextName} ${command[event] ? `with event ${command[event]}` : ""}`);
         }));
 
-        listeners.push(contextDispatcher.addListener("completeCommand", (ev, command)=>{
+        listeners.push(contextDispatcherInstance.addListener("completeCommand", (ev, command)=>{
             console.log(`command: ${command.constructor ? command.constructor.name : command.commandName} was completed in context ${context.contextName} ${command[event] ? `with event ${command[event]}` : ""}`);
         }));
 
-        listeners.push(contextDispatcher.addListener("mediator_created", (ev, payload)=>{
+        listeners.push(contextDispatcherInstance.addListener("mediator_created", (ev, payload)=>{
             console.log(`mediator: ${payload.mediator.constructor ? payload.mediator.constructor.name : payload.mediator.prototype ? payload.mediator.prototype.constructor.name : payload.mediator.name} was created in context ${context.contextName}`);
         }));
 
-        listeners.push(contextDispatcher.addListener("mediator_initialized", (ev, payload)=>{
+        listeners.push(contextDispatcherInstance.addListener("mediator_initialized", (ev, payload)=>{
             console.log(`mediator: ${payload.mediator.constructor ? payload.mediator.constructor.name : payload.mediator.prototype ? payload.mediator.prototype.constructor.name : payload.mediator.name} was initialized in context ${context.contextName}`);
         }));
 
-        listeners.push(contextDispatcher.addListener("mediator_destroyed", (ev, payload)=>{
+        listeners.push(contextDispatcherInstance.addListener("mediator_destroyed", (ev, payload)=>{
             console.log(`mediator: ${payload.mediator.constructor ? payload.mediator.constructor.name : payload.mediator.prototype ? payload.mediator.prototype.constructor.name : payload.mediator.name} was destroyed from context ${context.contextName}`);
         }));
 
-        listeners.push(contextDispatcher.addListener("mediator_updated", (ev, payload)=>{
+        listeners.push(contextDispatcherInstance.addListener("mediator_updated", (ev, payload)=>{
             console.log(`mediator: ${payload.mediator.constructor ? payload.mediator.constructor.name : payload.mediator.prototype ? payload.mediator.prototype.constructor.name : payload.mediator.name} was updated in context ${context.contextName}`);
         }));
 
-        listeners.push(contextDispatcher.addListener("mediator_mediated", (ev, payload)=>{
+        listeners.push(contextDispatcherInstance.addListener("mediator_mediated", (ev, payload)=>{
             console.log(`mediator: ${payload.mediator.constructor ? payload.mediator.constructor.name : payload.mediator.prototype ? payload.mediator.prototype.constructor.name : payload.mediator.name} executed ${payload.mediationKey} in context ${context.contextName}`);
         }));
 
-        listeners.push(contextDispatcher.addListener("modelAdded", (ev, payload)=>{
+        listeners.push(contextDispatcherInstance.addListener("modelAdded", (ev, payload)=>{
             console.log(`model with key ${payload.modelKey} was added with class ${payload.model.modelClass.name} to context ${context.contextName}`);
             if(watchModels) {
                 Logger.watchModel(payload.model.modelInstance);
             }
         }));
 
-        listeners.push(contextDispatcher.addListener("modelRemoved", (ev, payload)=>{
+        listeners.push(contextDispatcherInstance.addListener("modelRemoved", (ev, payload)=>{
             console.log(`model with key ${payload.modelKey} was added with class ${payload.model.modelClass.name} in context ${context.contextName}`);
         }));
 
-        listeners.push(contextDispatcher.addListener("added_child", (ev, payload)=>{
+        listeners.push(contextDispatcherInstance.addListener("added_child", (ev, payload)=>{
             console.log(`added a new context with name ${payload.childContext.contextName} to context ${context.contextName}`);
             if(watchChildren) {
                 Logger.watchContext(payload.childContext);
             }
         }));
 
-        listeners.push(contextDispatcher.addListener("removed_child", (ev, payload)=>{
+        listeners.push(contextDispatcherInstance.addListener("removed_child", (ev, payload)=>{
             console.log(`removed context ${payload.childContext.contextName} from context ${context.contextName}`);
         }));
 
-        listeners.push(contextDispatcher.addListener("started", ()=>{
+        listeners.push(contextDispatcherInstance.addListener("started", ()=>{
             console.log(`context ${context.contextName} started`);
         }));
 
-        listeners.push(contextDispatcher.addListener("stopped", ()=>{
+        listeners.push(contextDispatcherInstance.addListener("stopped", ()=>{
             console.log(`context ${context.contextName} stopped`);
         }));
 
-        listeners.push(contextDispatcher.addListener("destroyed", ()=>{
+        listeners.push(contextDispatcherInstance.addListener("destroyed", ()=>{
             console.log(`context ${context.contextName} was destroyed`);
             listeners.forEach((listener)=>{
                 listener.remove();
