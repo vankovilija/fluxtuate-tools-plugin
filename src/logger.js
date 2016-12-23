@@ -41,14 +41,14 @@ export default class Logger {
         }));
 
         listeners.push(dispatcher.addListener("modelAdded", (ev, payload)=>{
-            console.log(`model with key ${payload.modelKey} was added with class ${payload.model.constructor ? payload.model.constructor.name : payload.model.name} to context ${context.contextName}`);
+            console.log(`model with key ${payload.modelKey} was added with class ${payload.model.modelClass.name} to context ${context.contextName}`);
             if(watchModels) {
-                Logger.watchModel(payload.model);
+                Logger.watchModel(payload.model.modelInstance);
             }
         }));
 
         listeners.push(dispatcher.addListener("modelRemoved", (ev, payload)=>{
-            console.log(`model with key ${payload.modelKey} was added with class ${payload.model.constructor ? payload.model.constructor.name : payload.model.name} in context ${context.contextName}`);
+            console.log(`model with key ${payload.modelKey} was added with class ${payload.model.modelClass.name} in context ${context.contextName}`);
         }));
 
         listeners.push(dispatcher.addListener("added_child", (ev, payload)=>{
